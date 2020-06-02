@@ -10,53 +10,55 @@ class ActividadController {
     const user = await auth.getUser();
     const { id } = params;
     const tarea = await Tarea.find(id);
-    //const proyecto = await Proyecto.find(id);
-    AutorizacionService.verificarPermiso(tarea, proyecto);
+    const proyecto = await tarea.proyecto().fetch();
+    AutorizacionService.verificarPermiso(proyecto, user);
     return await tarea.actividades().fetch();
   }
 
   async create({ auth, request, params}) {
     const user = await auth.getUser();
-    const { descripcion, fechaInicio, fechaFin, prioridad } = request.all();
+    const { nombre, descripcion, fechaInicio, fechaFin } = request.all();
     const { id } = params;
-    const proyecto = await Proyecto.find(id);
+    const tarea = await Tarea.find(id);
+    const proyecto = await tarea.proyecto().fetch();
     AutorizacionService.verificarPermiso(proyecto, user);
-    const tarea = new Tarea();
-    tarea.fill({
+    const actividad = new Actividades();
+    actividad.fill({
+      nombre,
       descripcion,
       fechaInicio,
-      fechaFin,
-      prioridad
+      fechaFin
     });
-    await proyecto.tareas().save(tarea);
-    return tarea;
+    await tarea.actividades().save(actividad);
+    return actividad;
   }
 
   async update({ auth, params, request}) {
     const user = await auth.getUser();
     const { id } = params;
+    const actividad = await Actividades.find(id);
     const tarea = await Tarea.find(id);
     const proyecto = await tarea.proyecto().fetch();
     AutorizacionService.verificarPermiso(proyecto, user);
-    tarea.merge(request.only([
+    actividad.merge(request.only([
+      'nombre',
       'descripcion',
       'fechaInicio',
-      'fechaFin',
-      'prioridad',
-      'completada'
+      'fechaFin'
     ]))
-    await tarea.save();
-    return tarea;
+    await actividad.save();
+    return actividad;
   }
 
   async destroy({ auth, params}) {
     const user = await auth.getUser();
     const { id } = params;
+    const actividad = await Actividades.find(id);
     const tarea = await Tarea.find(id);
     const proyecto = await tarea.proyecto().fetch();
     AutorizacionService.verificarPermiso(proyecto, user);
-    await tarea.delete();
-    return tarea;
+    await actividad.delete();
+    return actividad;
   }
 }
 module.exports = ActividadController

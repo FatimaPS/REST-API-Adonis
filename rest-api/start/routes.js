@@ -30,9 +30,9 @@ Route.group(() => {
 	Route.delete('tareas/:id', 'TareaController.destroy').middleware('auth');
 	Route.patch('tareas/:id', 'TareaController.update').middleware('auth');
 	//Rutas de las actividades
-	//Route.post('proyectos/:id/tareas', 'TareaController.create').middleware('auth');
+	Route.post('tareas/:id/actividades', 'ActividadController.create').middleware('auth');
 	Route.get('tareas/:id/actividades', 'ActividadController.index').middleware('auth');
-	//Route.delete('tareas/:id', 'TareaController.destroy').middleware('auth');
-	//Route.patch('tareas/:id', 'TareaController.update').middleware('auth');
+	Route.delete('actividades/:id', 'ActividadController.destroy').middleware('auth');
+	Route.patch('actividades/:id', 'ActividadController.update').middleware('auth');
 }).prefix('api/v1/');
 

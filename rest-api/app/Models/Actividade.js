@@ -4,7 +4,11 @@
 const Model = use('Model')
 
 class Actividade extends Model {
-	tarea () {
+  proyecto() {
+    return this.belongsTo('App/Models/Proyecto')
+  }
+
+	tarea() {
     return this.belongsTo('App/Models/Tarea')
   }
 }

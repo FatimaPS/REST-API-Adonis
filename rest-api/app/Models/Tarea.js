@@ -4,11 +4,11 @@
 const Model = use('Model')
 
 class Tarea extends Model {
-  proyecto () {
+  proyecto() {
     return this.belongsTo('App/Models/Proyecto')
   }
 
-  actividades () {
+  actividades() {
     return this.hasMany('App/Models/Actividade')
   }
 }
