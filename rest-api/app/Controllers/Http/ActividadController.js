@@ -35,9 +35,9 @@ class ActividadController {
 
   async update({ auth, params, request}) {
     const user = await auth.getUser();
-    const { id } = params;
+    const { tid, id } = params;
     const actividad = await Actividades.find(id);
-    const tarea = await Tarea.find(id);
+    const tarea = await Tarea.find(tid);
     const proyecto = await tarea.proyecto().fetch();
     AutorizacionService.verificarPermiso(proyecto, user);
     actividad.merge(request.only([
@@ -52,9 +52,9 @@ class ActividadController {
 
   async destroy({ auth, params}) {
     const user = await auth.getUser();
-    const { id } = params;
+    const { tid, id } = params;
     const actividad = await Actividades.find(id);
-    const tarea = await Tarea.find(id);
+    const tarea = await Tarea.find(tid);
     const proyecto = await tarea.proyecto().fetch();
     AutorizacionService.verificarPermiso(proyecto, user);
     await actividad.delete();
